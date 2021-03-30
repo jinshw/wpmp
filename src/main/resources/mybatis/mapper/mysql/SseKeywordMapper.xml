@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseKeywordDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseKeyword">
+        <result column="kw_id" property="kwId"/>
+		<result column="kw_name" property="kwName"/>
+		<result column="kw_name_english" property="kwNameEnglish"/>
+		<result column="type" property="type"/>
+		<result column="opt_time" property="optTime"/>
+		<result column="opt_person" property="optPerson"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `kw_id`,
+		`kw_name`,
+		`kw_name_english`,
+		`type`,
+		`opt_time`,
+		`opt_person`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_keyword (
+		`kw_id`,
+		`kw_name`,
+		`kw_name_english`,
+		`type`,
+		`opt_time`,
+		`opt_person`
+
+	) VALUES ( 
+		#{kwId},
+		#{kwName},
+		#{kwNameEnglish},
+		#{type},
+		#{optTime},
+		#{optPerson}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_keyword
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kwId!=null">`kw_id`,</if> 
+			<if test="kwName!=null">`kw_name`,</if> 
+			<if test="kwNameEnglish!=null">`kw_name_english`,</if> 
+			<if test="type!=null">`type`,</if> 
+			<if test="optTime!=null">`opt_time`,</if> 
+			<if test="optPerson!=null">`opt_person`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kwId!=null">#{kwId},</if> 
+			<if test="kwName!=null">#{kwName},</if> 
+			<if test="kwNameEnglish!=null">#{kwNameEnglish},</if> 
+			<if test="type!=null">#{type},</if> 
+			<if test="optTime!=null">#{optTime},</if> 
+			<if test="optPerson!=null">#{optPerson},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_keyword
+        <trim prefix="set" suffixOverrides=",">
+            <if test="kwId!=null">`kw_id`= #{kwId},</if> 
+			<if test="kwName!=null">`kw_name`= #{kwName},</if> 
+			<if test="kwNameEnglish!=null">`kw_name_english`= #{kwNameEnglish},</if> 
+			<if test="type!=null">`type`= #{type},</if> 
+			<if test="optTime!=null">`opt_time`= #{optTime},</if> 
+			<if test="optPerson!=null">`opt_person`= #{optPerson},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseKeyword" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_keyword
+        <where>
+            <if test="kwId != null">AND kw_id = #{kwId}</if>
+			<if test="kwName != null">AND kw_name = #{kwName}</if>
+			<if test="kwNameEnglish != null">AND kw_name_english = #{kwNameEnglish}</if>
+			<if test="type != null">AND type = #{type}</if>
+			<if test="optTime != null">AND opt_time = #{optTime}</if>
+			<if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </select>
+
+    <select id="selectBySid" parameterType="java.lang.String" resultMap="AllColumnMap">
+        select k.*
+		from sse_scene_datas s,sse_keyword k,sse_scene_keyword sk
+		where s.sid = sk.sid and k.kw_id = sk.kw_id
+		and s.sid = #{sid}
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseKeyword">
+        DELETE from sse_keyword
+        <where>
+            <if test="kwId != null">AND kw_id = #{kwId}</if>
+			<if test="kwName != null">AND kw_name = #{kwName}</if>
+			<if test="kwNameEnglish != null">AND kw_name_english = #{kwNameEnglish}</if>
+			<if test="type != null">AND type = #{type}</if>
+			<if test="optTime != null">AND opt_time = #{optTime}</if>
+			<if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

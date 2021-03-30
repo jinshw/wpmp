@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseCollectionDatasFilesDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseCollectionDatasFiles">
+        <result column="id" property="id"/>
+		<result column="fid" property="fid"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `id`,
+		`fid`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_collection_datas_files (
+		`id`,
+		`fid`
+
+	) VALUES ( 
+		#{id},
+		#{fid}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_collection_datas_files
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">`id`,</if> 
+			<if test="fid!=null">`fid`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">#{id},</if> 
+			<if test="fid!=null">#{fid},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_collection_datas_files
+        <trim prefix="set" suffixOverrides=",">
+            <if test="id!=null">`id`= #{id},</if> 
+			<if test="fid!=null">`fid`= #{fid},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseCollectionDatasFiles" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_collection_datas_files
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+			<if test="fid != null">AND fid = #{fid}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseCollectionDatasFiles">
+        DELETE from sse_collection_datas_files
+        <where>
+            <if test="id != null">AND id = #{id}</if>
+			<if test="fid != null">AND fid = #{fid}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

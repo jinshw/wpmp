@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.WpmpProcessNodeDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.WpmpProcessNode">
+        <result column="pn_id" property="pnId"/>
+		<result column="se_id" property="seId"/>
+		<result column="user_id" property="userId"/>
+		<result column="step_active" property="stepActive"/>
+		<result column="create_time" property="createTime"/>
+
+        <collection property="files" column="pn_id" select="com.site.mountain.dao.mysql.SysFilesDao.selectByNodePnId"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `pn_id`,
+		`se_id`,
+		`user_id`,
+		`step_active`,
+		`create_time`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO wpmp_process_node (
+		`pn_id`,
+		`se_id`,
+		`user_id`,
+		`step_active`,
+		`create_time`
+
+	) VALUES ( 
+		#{pnId},
+		#{seId},
+		#{userId},
+		#{stepActive},
+		#{createTime}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO wpmp_process_node
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pnId!=null">`pn_id`,</if> 
+			<if test="seId!=null">`se_id`,</if> 
+			<if test="userId!=null">`user_id`,</if> 
+			<if test="stepActive!=null">`step_active`,</if> 
+			<if test="createTime!=null">`create_time`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pnId!=null">#{pnId},</if> 
+			<if test="seId!=null">#{seId},</if> 
+			<if test="userId!=null">#{userId},</if> 
+			<if test="stepActive!=null">#{stepActive},</if> 
+			<if test="createTime!=null">#{createTime},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE wpmp_process_node
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pnId!=null">`pn_id`= #{pnId},</if> 
+			<if test="seId!=null">`se_id`= #{seId},</if> 
+			<if test="userId!=null">`user_id`= #{userId},</if> 
+			<if test="stepActive!=null">`step_active`= #{stepActive},</if> 
+			<if test="createTime!=null">`create_time`= #{createTime},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.WpmpProcessNode" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from wpmp_process_node
+        <where>
+            <if test="pnId != null">AND pn_id = #{pnId}</if>
+			<if test="seId != null">AND se_id = #{seId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+			<if test="stepActive != null">AND step_active = #{stepActive}</if>
+			<if test="createTime != null">AND create_time = #{createTime}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.WpmpProcessNode">
+        DELETE from wpmp_process_node
+        <where>
+            <if test="pnId != null">AND pn_id = #{pnId}</if>
+			<if test="seId != null">AND se_id = #{seId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+			<if test="stepActive != null">AND step_active = #{stepActive}</if>
+			<if test="createTime != null">AND create_time = #{createTime}</if>
+
+        </where>
+    </delete>
+
+    <select id="selectMaxStep" resultType="java.lang.Integer">
+        SELECT ifnull(max(step_active),1 ) from wpmp_process_node
+    </select>
+
+
+</mapper>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseSceneFilesDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseSceneFiles">
+        <result column="fid" property="fid"/>
+		<result column="sid" property="sid"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `fid`,
+		`sid`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_scene_files (
+		`fid`,
+		`sid`
+
+	) VALUES ( 
+		#{fid},
+		#{sid}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_scene_files
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid!=null">`fid`,</if> 
+			<if test="sid!=null">`sid`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid!=null">#{fid},</if> 
+			<if test="sid!=null">#{sid},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_scene_files
+        <trim prefix="set" suffixOverrides=",">
+            <if test="fid!=null">`fid`= #{fid},</if> 
+			<if test="sid!=null">`sid`= #{sid},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseSceneFiles" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_files
+        <where>
+            <if test="fid != null">AND fid = #{fid}</if>
+			<if test="sid != null">AND sid = #{sid}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseSceneFiles">
+        DELETE from sse_scene_files
+        <where>
+            <if test="fid != null">AND fid = #{fid}</if>
+			<if test="sid != null">AND sid = #{sid}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

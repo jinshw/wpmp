@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.WpmpStartendDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.WpmpStartend">
+        <result column="se_id" property="seId"/>
+		<result column="user_id" property="userId"/>
+		<result column="bussnessname" property="bussnessname"/>
+		<result column="pname" property="pname"/>
+		<result column="type" property="type"/>
+		<result column="create_time" property="createTime"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `se_id`,
+		`user_id`,
+		`bussnessname`,
+		`pname`,
+		`type`,
+		`create_time`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO wpmp_startend (
+		`se_id`,
+		`user_id`,
+		`bussnessname`,
+		`pname`,
+		`type`,
+		`create_time`
+
+	) VALUES ( 
+		#{seId},
+		#{userId},
+		#{bussnessname},
+		#{pname},
+		#{type},
+		#{createTime}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO wpmp_startend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seId!=null">`se_id`,</if> 
+			<if test="userId!=null">`user_id`,</if> 
+			<if test="bussnessname!=null">`bussnessname`,</if> 
+			<if test="pname!=null">`pname`,</if> 
+			<if test="type!=null">`type`,</if> 
+			<if test="createTime!=null">`create_time`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seId!=null">#{seId},</if> 
+			<if test="userId!=null">#{userId},</if> 
+			<if test="bussnessname!=null">#{bussnessname},</if> 
+			<if test="pname!=null">#{pname},</if> 
+			<if test="type!=null">#{type},</if> 
+			<if test="createTime!=null">#{createTime},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE wpmp_startend
+        <trim prefix="set" suffixOverrides=",">
+            <if test="seId!=null">`se_id`= #{seId},</if> 
+			<if test="userId!=null">`user_id`= #{userId},</if> 
+			<if test="bussnessname!=null">`bussnessname`= #{bussnessname},</if> 
+			<if test="pname!=null">`pname`= #{pname},</if> 
+			<if test="type!=null">`type`= #{type},</if> 
+			<if test="createTime!=null">`create_time`= #{createTime},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.WpmpStartend" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from wpmp_startend
+        <where>
+            <if test="seId != null">AND se_id = #{seId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+			<if test="bussnessname != null">AND bussnessname = #{bussnessname}</if>
+			<if test="pname != null">AND pname = #{pname}</if>
+			<if test="type != null">AND type = #{type}</if>
+			<if test="createTime != null">AND create_time = #{createTime}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.WpmpStartend">
+        DELETE from wpmp_startend
+        <where>
+            <if test="seId != null">AND se_id = #{seId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+			<if test="bussnessname != null">AND bussnessname = #{bussnessname}</if>
+			<if test="pname != null">AND pname = #{pname}</if>
+			<if test="type != null">AND type = #{type}</if>
+			<if test="createTime != null">AND create_time = #{createTime}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

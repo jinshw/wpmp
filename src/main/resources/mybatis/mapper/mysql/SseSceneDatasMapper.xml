@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseSceneDatasDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseSceneDatas">
+        <result column="sid" property="sid"/>
+		<result column="sc_id" property="scId"/>
+		<result column="scene_name" property="sceneName"/>
+		<result column="scene_description" property="sceneDescription"/>
+		<result column="road_type" property="roadType"/>
+		<result column="scene_type" property="sceneType"/>
+		<result column="scene_source" property="sceneSource"/>
+		<result column="status" property="status"/>
+		<result column="preview_file" property="previewFile"/>
+		<result column="review_status" property="reviewStatus"/>
+		<result column="review_comment" property="reviewComment"/>
+		<result column="update_time" property="updateTime"/>
+		<result column="opt_person" property="optPerson"/>
+		<result column="file_path" property="filePath"/>
+		<result column="innum" property="innum"/>
+		<result column="mynum" property="mynum"/>
+		<collection property="sysUser" column="opt_person" select="com.site.mountain.dao.mysql.SysUserDao.findUser"/>
+<!--		<collection property="roadTypeObj" column="road_type" select="com.site.mountain.dao.mysql.SseSceneTypeDao.selectByid"/>-->
+<!--		<collection property="sceneTypeObj" column="scene_type" select="com.site.mountain.dao.mysql.SseSceneTypeDao.selectByid"/>-->
+		<collection property="keywordList" column="sid" select="com.site.mountain.dao.mysql.SseKeywordDao.selectBySid" />
+    	<collection property="scenetypeList" column="sid" select="com.site.mountain.dao.mysql.SseSceneTypeDao.findListBySid" />
+	</resultMap>
+
+    <sql id="all_column">
+        `sid`,
+		`sc_id`,
+		`scene_name`,
+		`scene_description`,
+		`road_type`,
+		`scene_type`,
+		`scene_source`,
+		`status`,
+		`preview_file`,
+		`review_status`,
+		`review_comment`,
+		`update_time`,
+		`opt_person`,
+		`file_path`
+
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_scene_datas (
+		`sid`,
+		`sc_id`,
+		`scene_name`,
+		`scene_description`,
+		`road_type`,
+		`scene_type`,
+		`scene_source`,
+		`status`,
+		`preview_file`,
+		`review_status`,
+		`review_comment`,
+		`update_time`,
+		`opt_person`,
+		`file_path`
+
+	) VALUES ( 
+		#{sid},
+		#{scId},
+		#{sceneName},
+		#{sceneDescription},
+		#{roadType},
+		#{sceneType},
+		#{sceneSource},
+		#{status},
+		#{previewFile},
+		#{reviewStatus},
+		#{reviewComment},
+		#{updateTime},
+		#{optPerson},
+		#{filePath}
+	)
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_scene_datas
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid!=null">`sid`,</if>
+			<if test="scId!=null">`sc_id`,</if>
+			<if test="sceneName!=null">`scene_name`,</if>
+			<if test="sceneDescription!=null">`scene_description`,</if>
+			<if test="roadType!=null">`road_type`,</if>
+			<if test="sceneType!=null">`scene_type`,</if>
+			<if test="sceneSource!=null">`scene_source`,</if>
+			<if test="status!=null">`status`,</if>
+			<if test="previewFile!=null">`preview_file`,</if>
+			<if test="reviewStatus!=null">`review_status`,</if>
+			<if test="reviewComment!=null">`review_comment`,</if>
+			<if test="updateTime!=null">`update_time`,</if> 
+			<if test="optPerson!=null">`opt_person`,</if> 
+			<if test="filePath!=null">`file_path`,</if>
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid!=null">#{sid},</if>
+			<if test="scId!=null">#{scId},</if> 
+			<if test="sceneName!=null">#{sceneName},</if> 
+			<if test="sceneDescription!=null">#{sceneDescription},</if> 
+			<if test="roadType!=null">#{roadType},</if> 
+			<if test="sceneType!=null">#{sceneType},</if> 
+			<if test="sceneSource!=null">#{sceneSource},</if> 
+			<if test="status!=null">#{status},</if> 
+			<if test="previewFile!=null">#{previewFile},</if> 
+			<if test="reviewStatus!=null">#{reviewStatus},</if> 
+			<if test="reviewComment!=null">#{reviewComment},</if> 
+			<if test="updateTime!=null">#{updateTime},</if> 
+			<if test="optPerson!=null">#{optPerson},</if> 
+			<if test="filePath!=null">#{filePath},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_scene_datas
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sid!=null and sid!=''">`sid`= #{sid},</if>
+			<if test="scId!=null and scId!=''">`sc_id`= #{scId},</if>
+			<if test="sceneName!=null">`scene_name`= #{sceneName},</if> 
+			<if test="sceneDescription!=null">`scene_description`= #{sceneDescription},</if> 
+			<if test="roadType!=null and roadType!=''">`road_type`= #{roadType},</if>
+			<if test="sceneType!=null and sceneType!=''">`scene_type`= #{sceneType},</if>
+			<if test="sceneSource!=null and sceneSource!=''">`scene_source`= #{sceneSource},</if>
+			<if test="status!=null and status!=''">`status`= #{status},</if>
+			<if test="previewFile!=null and previewFile!=''">`preview_file`= #{previewFile},</if>
+			<if test="reviewStatus!=null and reviewStatus!=''">`review_status`= #{reviewStatus},</if>
+			<if test="reviewComment!=null and reviewComment!=''">`review_comment`= #{reviewComment},</if>
+			<if test="filePath!=null and filePath!=''">`file_path`= #{filePath},</if>
+<!--			<if test="optPerson!=null">`opt_person`= #{optPerson},</if>-->
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseSceneDatas" resultMap="AllColumnMap">
+        select distinct sd.*
+        from sse_scene_datas sd,sse_scene_scenetype ss
+        <where>
+        	<if test="1==1">
+				AND sd.sid = ss.sid
+			</if>
+			<if test="scenetypeList.size() > 0 ">
+				AND ss.st_id IN
+				<foreach item="item" index="" collection="scenetypeList" open="(" close=")" separator=",">
+					#{item.stId}
+				</foreach>
+			</if>
+            <if test="sid != null and sid != ''">AND sd.sid = #{sid}</if>
+			<if test="scId != null and scId != ''">AND sd.sc_id = #{scId}</if>
+			<if test="sceneName != null and sceneName != ''">
+				<bind name="pattern" value="'%' + sceneName + '%'" />
+				AND sd.scene_name LIKE  #{pattern}
+			</if>
+			<if test="sceneDescription != null and sceneDescription != ''" >AND sd.scene_description = #{sceneDescription}</if>
+			<if test="roadType != null and roadType != ''">AND sd.road_type = #{roadType}</if>
+			<if test="sceneType != null and sceneType != ''">AND sd.scene_type = #{sceneType}</if>
+			<if test="sceneSource != null and sceneSource != ''">AND sd.scene_source = #{sceneSource}</if>
+			<if test="status != null and status != ''">AND sd.status = #{status}</if>
+			<if test="previewFile != null and previewFile != ''">AND sd.preview_file = #{previewFile}</if>
+			<if test="reviewStatus != null and reviewStatus != ''">AND sd.review_status = #{reviewStatus}</if>
+			<if test="reviewComment != null and reviewComment != ''">AND sd.review_comment = #{reviewComment}</if>
+			<if test="updateTime != null and updateTime != ''" >AND sd.update_time = #{updateTime}</if>
+			<if test="optPerson != null and optPerson != ''">AND sd.opt_person = #{optPerson}</if>
+
+        </where>
+    </select>
+
+    <select id="findDistributionList" parameterType="com.site.mountain.entity.SseSceneDatas" resultMap="AllColumnMap">
+        select sd.*
+        from sse_scene_datas sd,sse_review_user ru
+        <where>
+			<if test="1==1">
+				AND sd.sid = ru.sid
+			</if>
+			<if test="1==1">
+				AND ru.user_id IN
+				<foreach item="item" index="index" collection="sysUser.authUsers" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+
+            <if test="sid != null and sid != ''">AND sid = #{sid}</if>
+			<if test="scId != null and scId != ''">AND sc_id = #{scId}</if>
+			<if test="sceneName != null and sceneName != ''">
+				<bind name="pattern" value="'%' + sceneName + '%'" />
+				AND scene_name LIKE  #{pattern}
+			</if>
+			<if test="sceneDescription != null and sceneDescription != ''" >AND scene_description = #{sceneDescription}</if>
+			<if test="roadType != null and roadType != ''">AND road_type = #{roadType}</if>
+			<if test="sceneType != null and sceneType != ''">AND scene_type = #{sceneType}</if>
+			<if test="sceneSource != null and sceneSource != ''">AND scene_source = #{sceneSource}</if>
+			<if test="status != null and status != ''">AND status = #{status}</if>
+			<if test="previewFile != null and previewFile != ''">AND preview_file = #{previewFile}</if>
+			<if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus}</if>
+			<if test="reviewComment != null and reviewComment != ''">AND review_comment = #{reviewComment}</if>
+			<if test="updateTime != null and updateTime != ''" >AND update_time = #{updateTime}</if>
+			<if test="optPerson != null and optPerson != ''">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </select>
+
+	<select id="findListByKeyword" parameterType="com.site.mountain.entity.SseSceneDatas" resultMap="AllColumnMap">
+		SELECT DISTINCT sd.* from sse_scene_datas sd,sse_keyword k,sse_scene_keyword sk
+		<where>
+			<if test="1==1">and sd.sid = sk.sid and k.kw_id = sk.kw_id</if>
+			<if test="keywords != null">
+				and k.kw_id in
+				<foreach collection="keywords" item="keyword" index="index" open="(" separator="," close=")">
+					#{keyword}
+				</foreach>
+			</if>
+			<if test="sid != null and sid != ''">AND sd.sid = #{sid}</if>
+			<if test="scId != null and scId != ''">AND sd.sc_id = #{scId}</if>
+			<if test="sceneName != null and sceneName != ''">
+				<bind name="pattern" value="'%' + sceneName + '%'" />
+				AND (sd.scene_name LIKE  #{pattern} OR sd.scene_description LIKE  #{pattern} )
+			</if>
+<!--			<if test="sceneDescription != null and sceneDescription != ''">-->
+<!--				<bind name="pattern" value="'%' + sceneDescription + '%'" />-->
+<!--				OR sd.scene_description LIKE  #{pattern}-->
+<!--			</if>-->
+			<if test="roadType != null and roadType != ''">AND sd.road_type = #{roadType}</if>
+			<if test="sceneType != null and sceneType != ''">AND sd.scene_type = #{sceneType}</if>
+			<if test="sceneSource != null and sceneSource != ''">AND sd.scene_source = #{sceneSource}</if>
+			<if test="status != null and status != ''">AND sd.status = #{status}</if>
+			<if test="previewFile != null and previewFile != ''">AND sd.preview_file = #{previewFile}</if>
+			<if test="reviewStatus != null">AND review_status = #{reviewStatus}</if>
+			<if test="reviewComment != null and reviewComment != ''">AND sd.review_comment = #{reviewComment}</if>
+			<if test="updateTime != null and updateTime != ''" >AND sd.update_time = #{updateTime}</if>
+			<if test="optPerson != null and optPerson != ''">AND sd.opt_person = #{optPerson}</if>
+
+		</where>
+	</select>
+
+	<select id="findUserById" parameterType="com.site.mountain.entity.SseSceneDatas" resultType="com.site.mountain.entity.SysUser">
+        SELECT u.*
+		FROM  sse_review_user ru,sys_user u
+		where ru.user_id = u.user_id
+		and ru.sid = #{sid}
+    </select>
+
+	<select id="findWebList" parameterType="com.site.mountain.entity.SseSceneDatas" resultMap="AllColumnMap">
+		SELECT t.* ,
+		(
+			SELECT count(1)
+			FROM
+				sse_scene_datas sd,
+				sse_scene_scenetype ss
+			<where>
+				<if test="1==1">
+					AND sd.sid = ss.sid
+					AND sd.sid = t.sid
+				</if>
+				<if test="scenetypeList.size() > 0 ">
+					AND ss.st_id IN
+					<foreach item="item" index="" collection="scenetypeList" open="(" close=")" separator=",">
+						#{item.stId}
+					</foreach>
+				</if>
+			</where>
+		) innum,
+		(
+			SELECT count(1) mynum
+			FROM
+				sse_scene_datas sd,
+				sse_scene_scenetype ss
+			WHERE
+				sd.sid = ss.sid
+			and ss.sid = t.sid
+		) mynum
+		from sse_scene_datas t
+		where t.review_status = 2
+	</select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseSceneDatas">
+        DELETE from sse_scene_datas
+        <where>
+            <if test="sid != null">AND sid = #{sid}</if>
+			<if test="scId != null">AND sc_id = #{scId}</if>
+			<if test="sceneName != null">AND scene_name = #{sceneName}</if>
+			<if test="sceneDescription != null">AND scene_description = #{sceneDescription}</if>
+			<if test="roadType != null">AND road_type = #{roadType}</if>
+			<if test="sceneType != null">AND scene_type = #{sceneType}</if>
+			<if test="sceneSource != null">AND scene_source = #{sceneSource}</if>
+			<if test="status != null">AND status = #{status}</if>
+			<if test="previewFile != null">AND preview_file = #{previewFile}</if>
+			<if test="reviewStatus != null">AND review_status = #{reviewStatus}</if>
+			<if test="reviewComment != null">AND review_comment = #{reviewComment}</if>
+			<if test="updateTime != null">AND update_time = #{updateTime}</if>
+			<if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseChartDao">
+    <select id="findCollectionChart" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT tt.opttime,count(tt.cd_id) total
+		from (
+			SELECT DATE_FORMAT(t.opt_time,'%Y-%m-%d') opttime,t.cd_id
+			from sse_collection_datas t
+		) tt
+		GROUP BY tt.opttime
+		ORDER BY tt.opttime asc
+		LIMIT 0 , 7
+    </select>
+    <select id="findProgressChart" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT tt.opttime,count(tt.cd_id) total
+		from (
+			SELECT DATE_FORMAT(t.opt_time,'%Y-%m-%d') opttime,t.cd_id
+			from sse_collection_datas t
+			where t.data_step &lt;&gt; 1
+		) tt
+		GROUP BY tt.opttime
+		ORDER BY tt.opttime asc
+		LIMIT 0 , 7
+    </select>
+
+    <select id="findSceneChart" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT tt.opttime,count(tt.sid) total
+		from (
+		SELECT DATE_FORMAT(t.update_time,'%Y-%m-%d') opttime,t.sid
+		from sse_scene_datas t
+		) tt
+		GROUP BY tt.opttime
+		ORDER BY tt.opttime asc
+		LIMIT 0 , 7
+    </select>
+    <select id="findAuditChart" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT tt.opttime,count(tt.sid) total
+		from (
+		SELECT DATE_FORMAT(t.update_time,'%Y-%m-%d') opttime,t.sid
+		from sse_scene_datas t
+		where t.review_status = 2
+		) tt
+		GROUP BY tt.opttime
+		ORDER BY tt.opttime asc
+		LIMIT 0 , 7
+    </select>
+    <select id="findPieCollection" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT count(t.data_source) value,
+		(
+		case t.data_source
+		WHEN 1 THEN
+			'车载采集'
+		WHEN 2 THEN
+			'路侧采集'
+		END
+		) name
+		from sse_collection_datas t
+		GROUP BY t.data_source
+    </select>
+    <select id="findPieScene" parameterType="java.lang.Integer" resultType="com.site.mountain.entity.SseChart">
+		SELECT count(t.scene_source) value,
+		(
+		case t.scene_source
+		WHEN 1 THEN
+			'接口导入'
+		WHEN 2 THEN
+			'页面新增'
+		WHEN 3 THEN
+			'其他'
+		END
+		) name
+		from sse_scene_datas t
+		GROUP BY t.scene_source
+    </select>
+
+
+</mapper>
+

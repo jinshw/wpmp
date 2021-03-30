@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseTaskDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseTask">
+        <result column="task_id" property="taskId"/>
+        <result column="task_name" property="taskName"/>
+        <result column="scope" property="scope"/>
+        <result column="element" property="element"/>
+        <result column="data_used" property="dataUsed"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="opt_time" property="optTime"/>
+        <result column="opt_person" property="optPerson"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `task_id`,
+		`task_name`,
+		`scope`,
+		`element`,
+		`data_used`,
+		`status`,
+		`remark`,
+		`create_time`,
+		`opt_time`,
+		`opt_person`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_task (
+		`task_id`,
+		`task_name`,
+		`scope`,
+		`element`,
+		`data_used`,
+		`status`,
+		`remark`,
+		`create_time`,
+		`opt_time`,
+		`opt_person`
+
+	) VALUES ( 
+		#{taskId},
+		#{taskName},
+		#{scope},
+		#{element},
+		#{dataUsed},
+		#{status},
+		#{remark},
+		#{createTime},
+		#{optTime},
+		#{optPerson}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId!=null">`task_id`,</if>
+            <if test="taskName!=null">`task_name`,</if>
+            <if test="scope!=null">`scope`,</if>
+            <if test="element!=null">`element`,</if>
+            <if test="dataUsed!=null">`data_used`,</if>
+            <if test="status!=null">`status`,</if>
+            <if test="remark!=null">`remark`,</if>
+            <if test="createTime!=null">`create_time`,</if>
+            <if test="optTime!=null">`opt_time`,</if>
+            <if test="optPerson!=null">`opt_person`,</if>
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId!=null">#{taskId},</if>
+            <if test="taskName!=null">#{taskName},</if>
+            <if test="scope!=null">#{scope},</if>
+            <if test="element!=null">#{element},</if>
+            <if test="dataUsed!=null">#{dataUsed},</if>
+            <if test="status!=null">#{status},</if>
+            <if test="remark!=null">#{remark},</if>
+            <if test="createTime!=null">#{createTime},</if>
+            <if test="optTime!=null">#{optTime},</if>
+            <if test="optPerson!=null">#{optPerson},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_task
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskId!=null and taskId != ''">`task_id`= #{taskId},</if>
+            <if test="taskName!=null and taskName != ''">`task_name`= #{taskName},</if>
+            <if test="scope!=null and scope != ''">`scope`= #{scope},</if>
+            <if test="element!=null and element != ''">`element`= #{element},</if>
+            <if test="dataUsed!=null and dataUsed != ''">`data_used`= #{dataUsed},</if>
+            <if test="status!=null">`status`= #{status},</if>
+            <if test="remark!=null and remark != ''">`remark`= #{remark},</if>
+            <if test="createTime!=null">`create_time`= #{createTime},</if>
+            <if test="optTime!=null">`opt_time`= #{optTime},</if>
+            <if test="optPerson!=null">`opt_person`= #{optPerson},</if>
+
+        </trim>
+        WHERE task_id=#{taskId}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseTask" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_task t
+        <where>
+            <if test="taskId != null and taskId != ''">AND t.task_id = #{taskId}</if>
+            <if test="taskName != null and taskName != ''">
+                <bind name="pattern" value="'%' + taskName + '%'"/>
+                AND t.task_name LIKE #{pattern}
+            </if>
+            <if test="scope != null and scope != ''">AND t.scope = #{scope}</if>
+            <if test="element != null and element != ''">AND t.element = #{element}</if>
+            <if test="dataUsed != null and dataUsed != ''">AND t.data_used = #{dataUsed}</if>
+            <if test="status != null">AND t.status = #{status}</if>
+            <if test="remark != null and remark != ''">AND t.remark = #{remark}</if>
+            <if test="createTime != null and createTime != ''">AND t.create_time = #{createTime}</if>
+            <if test="optTime != null and optTime != ''">AND t.opt_time = #{optTime}</if>
+            <if test="optPerson != null and optPerson != ''">AND t.opt_person = #{optPerson}</if>
+
+        </where>
+        order by t.create_time desc
+    </select>
+
+    <select id="findDistributionList" parameterType="com.site.mountain.entity.SseTask" resultMap="AllColumnMap">
+        select t.*
+        from sse_task t,sse_task_user tu
+        <where>
+            <if test="1==1">
+                AND t.task_id = tu.task_id
+            </if>
+            <if test="1==1">
+                AND tu.user_id IN
+                <foreach item="item" index="index" collection="sysUser.authUsers" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="taskId != null and taskId != ''">AND t.task_id = #{taskId}</if>
+            <if test="taskName != null and taskName != ''">
+                <bind name="pattern" value="'%' + taskName + '%'"/>
+                AND t.task_name LIKE #{pattern}
+            </if>
+            <if test="scope != null and scope != ''">AND t.scope = #{scope}</if>
+            <if test="element != null and element != ''">AND t.element = #{element}</if>
+            <if test="dataUsed != null and dataUsed != ''">AND t.data_used = #{dataUsed}</if>
+            <if test="status != null and status != ''">AND t.status = #{status}</if>
+            <if test="remark != null and remark != ''">AND t.remark = #{remark}</if>
+            <if test="createTime != null and createTime != ''">AND t.create_time = #{createTime}</if>
+            <if test="optTime != null and optTime != ''">AND t.opt_time = #{optTime}</if>
+            <if test="optPerson != null and optPerson != ''">AND t.opt_person = #{optPerson}</if>
+
+        </where>
+        order by t.create_time desc
+    </select>
+
+    <select id="findListById" parameterType="com.site.mountain.entity.SseTask" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_task
+        <where>
+            <if test="1==1">AND task_id = #{taskId}</if>
+        </where>
+    </select>
+
+    <select id="findTaskByCdId" parameterType="java.lang.String" resultMap="AllColumnMap">
+        SELECT t.*
+        FROM sse_task t,sse_task_collection tc
+        where t.task_id = tc.task_id
+        and tc.cd_id = #{id}
+    </select>
+
+    <select id="findUserByTaskId" parameterType="com.site.mountain.entity.SseTask" resultType="com.site.mountain.entity.SysUser">
+        SELECT u.* FROM sse_task_user tu,sys_user u
+        where tu.user_id = u.user_id
+        and tu.task_id = #{taskId}
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseTask">
+        DELETE from sse_task
+        <where>
+            <if test="taskId != null and taskId != ''">AND task_id = #{taskId}</if>
+            <if test="taskName != null and taskName != ''">AND task_name = #{taskName}</if>
+            <if test="scope != null">AND scope = #{scope}</if>
+            <if test="element != null">AND element = #{element}</if>
+            <if test="dataUsed != null">AND data_used = #{dataUsed}</if>
+            <if test="status != null">AND status = #{status}</if>
+            <if test="remark != null">AND remark = #{remark}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="optTime != null">AND opt_time = #{optTime}</if>
+            <if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

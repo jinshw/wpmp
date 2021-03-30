@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseCollectionDatasDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseCollectionDatas">
+        <result column="cd_id" property="cdId"/>
+		<result column="cd_name" property="cdName"/>
+		<result column="data_source" property="dataSource"/>
+		<result column="data_type" property="dataType"/>
+		<result column="data_step" property="dataStep"/>
+		<result column="data_progress" property="dataProgress"/>
+		<result column="file_url" property="fileUrl"/>
+		<result column="person" property="person"/>
+		<result column="opt_time" property="optTime"/>
+		<collection property="sysUser" column="person" select="com.site.mountain.dao.mysql.SysUserDao.findUser"/>
+<!--		<collection property="sseTask" column="cdId" select="com.site.mountain.dao.mysql.SseTaskDao.findTaskByCdId"/>-->
+
+	</resultMap>
+
+    <sql id="all_column">
+        `cd_id`,
+		`cd_name`,
+		`data_source`,
+		`data_type`,
+		`data_step`,
+		`data_progress`,
+		`file_url`,
+		`person`,
+		`opt_time`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_collection_datas (
+		`cd_id`,
+		`cd_name`,
+		`data_source`,
+		`data_type`,
+		`data_step`,
+		`data_progress`,
+		`file_url`,
+		`person`,
+		`opt_time`
+
+	) VALUES ( 
+		#{cdId},
+		#{cdName},
+		#{dataSource},
+		#{dataType},
+		#{dataStep},
+		#{dataProgress},
+		#{fileUrl},
+		#{person},
+		#{optTime}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_collection_datas
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdId!=null">`cd_id`,</if> 
+			<if test="cdName!=null">`cd_name`,</if> 
+			<if test="dataSource!=null">`data_source`,</if> 
+			<if test="dataType!=null">`data_type`,</if> 
+			<if test="dataStep!=null">`data_step`,</if> 
+			<if test="dataProgress!=null">`data_progress`,</if> 
+			<if test="fileUrl!=null">`file_url`,</if> 
+			<if test="person!=null">`person`,</if> 
+			<if test="optTime!=null">`opt_time`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdId!=null">#{cdId},</if> 
+			<if test="cdName!=null">#{cdName},</if> 
+			<if test="dataSource!=null">#{dataSource},</if> 
+			<if test="dataType!=null">#{dataType},</if> 
+			<if test="dataStep!=null">#{dataStep},</if> 
+			<if test="dataProgress!=null">#{dataProgress},</if> 
+			<if test="fileUrl!=null">#{fileUrl},</if> 
+			<if test="person!=null">#{person},</if> 
+			<if test="optTime!=null">#{optTime},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_collection_datas
+        <trim prefix="set" suffixOverrides=",">
+			<if test="cdName!=null">`cd_name`= #{cdName},</if>
+			<if test="dataSource!=null">`data_source`= #{dataSource},</if> 
+			<if test="dataType!=null">`data_type`= #{dataType},</if> 
+			<if test="dataStep!=null">`data_step`= #{dataStep},</if> 
+			<if test="dataProgress!=null">`data_progress`= #{dataProgress},</if> 
+			<if test="fileUrl!=null">`file_url`= #{fileUrl},</if> 
+<!--			<if test="person!=null">`person`= #{person},</if> -->
+			<if test="optTime!=null">`opt_time`= #{optTime},</if> 
+
+        </trim>
+        WHERE cd_id=#{cdId}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseCollectionDatas" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_collection_datas
+        <where>
+            <if test="cdId != null and cdId != ''">AND cd_id = #{cdId}</if>
+			<if test="cdName != null and cdName != ''">
+				<bind name="pattern" value="'%' + cdName + '%'" />
+				AND cd_name LIKE  #{pattern}
+			</if>
+			<if test="dataSource != null and dataSource != ''">AND data_source = #{dataSource}</if>
+			<if test="dataType != null and dataType != ''" >AND data_type = #{dataType}</if>
+			<if test="dataStep != null and dataStep != ''">AND data_step = #{dataStep}</if>
+			<if test="dataProgress != null and dataProgress != ''">AND data_progress = #{dataProgress}</if>
+			<if test="fileUrl != null">AND file_url = #{fileUrl}</if>
+			<if test="person != null">AND person = #{person}</if>
+			<if test="optTime != null">AND opt_time = #{optTime}</if>
+
+        </where>
+        order by cd_name desc
+    </select>
+
+    <select id="findDistributionList" parameterType="com.site.mountain.entity.SseCollectionDatas" resultMap="AllColumnMap">
+        select cd.*
+        from sse_collection_datas cd,sse_collection_user cu
+        <where>
+			<if test="1==1">
+				AND cd.cd_id = cu.cd_id
+			</if>
+			<if test="1==1">
+				AND cu.user_id IN
+				<foreach item="item" index="index" collection="sysUser.authUsers" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+
+            <if test="cdId != null and cdId != ''">AND cd.cd_id = #{cdId}</if>
+			<if test="cdName != null and cdName != ''">
+				<bind name="pattern" value="'%' + cdName + '%'" />
+				AND cd.cd_name LIKE  #{pattern}
+			</if>
+			<if test="dataSource != null and dataSource != ''">AND cd.data_source = #{dataSource}</if>
+			<if test="dataType != null and dataType != ''" >AND cd.data_type = #{dataType}</if>
+			<if test="dataStep != null and dataStep != ''">AND cd.data_step = #{dataStep}</if>
+			<if test="dataProgress != null and dataProgress != ''">AND cd.data_progress = #{dataProgress}</if>
+			<if test="fileUrl != null">AND cd.file_url = #{fileUrl}</if>
+			<if test="person != null">AND cd.person = #{person}</if>
+			<if test="optTime != null">AND cd.opt_time = #{optTime}</if>
+
+        </where>
+        order by cd_name desc
+    </select>
+
+	<select id="findUserByCdId" parameterType="com.site.mountain.entity.SseCollectionDatas" resultType="com.site.mountain.entity.SysUser">
+        SELECT u.* FROM sse_collection_user cu,sys_user u
+        where cu.user_id = u.user_id
+        and cu.cd_id = #{cdId}
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseCollectionDatas">
+        DELETE from sse_collection_datas
+        <where>
+            <if test="cdId != null">AND cd_id = #{cdId}</if>
+			<if test="cdName != null">AND cd_name = #{cdName}</if>
+			<if test="dataSource != null">AND data_source = #{dataSource}</if>
+			<if test="dataType != null">AND data_type = #{dataType}</if>
+			<if test="dataStep != null">AND data_step = #{dataStep}</if>
+			<if test="dataProgress != null">AND data_progress = #{dataProgress}</if>
+			<if test="fileUrl != null">AND file_url = #{fileUrl}</if>
+			<if test="person != null">AND person = #{person}</if>
+			<if test="optTime != null">AND opt_time = #{optTime}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

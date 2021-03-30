@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseSceneScenetypeDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseSceneScenetype">
+        <result column="ssid" property="ssid"/>
+		<result column="sid" property="sid"/>
+		<result column="st_id" property="stId"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `ssid`,
+		`sid`,
+		`st_id`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_scene_scenetype (
+		`ssid`,
+		`sid`,
+		`st_id`
+
+	) VALUES ( 
+		#{ssid},
+		#{sid},
+		#{stId}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_scene_scenetype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ssid!=null">`ssid`,</if> 
+			<if test="sid!=null">`sid`,</if> 
+			<if test="stId!=null">`st_id`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ssid!=null">#{ssid},</if> 
+			<if test="sid!=null">#{sid},</if> 
+			<if test="stId!=null">#{stId},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_scene_scenetype
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ssid!=null">`ssid`= #{ssid},</if> 
+			<if test="sid!=null">`sid`= #{sid},</if> 
+			<if test="stId!=null">`st_id`= #{stId},</if> 
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseSceneScenetype" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_scenetype
+        <where>
+            <if test="ssid != null">AND ssid = #{ssid}</if>
+			<if test="sid != null">AND sid = #{sid}</if>
+			<if test="stId != null">AND st_id = #{stId}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseSceneScenetype">
+        DELETE from sse_scene_scenetype
+        <where>
+            <if test="ssid != null">AND ssid = #{ssid}</if>
+			<if test="sid != null">AND sid = #{sid}</if>
+			<if test="stId != null">AND st_id = #{stId}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

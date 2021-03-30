@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseReviewUserDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseReviewUser">
+        <result column="ru_id" property="ruId"/>
+        <result column="sid" property="sid"/>
+        <result column="user_id" property="userId"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `ru_id`,
+		`sid`,
+		`user_id`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_review_user (
+            `ru_id`,
+            `sid`,
+            `user_id`
+
+        ) VALUES (
+            #{ruId},
+            #{sid},
+            #{userId}
+        )
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_review_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruId!=null">`ru_id`,</if>
+            <if test="sid!=null">`sid`,</if>
+            <if test="userId!=null">`user_id`,</if>
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruId!=null">#{ruId},</if>
+            <if test="sid!=null">#{sid},</if>
+            <if test="userId!=null">#{userId},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_review_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ruId!=null">`ru_id`= #{ruId},</if>
+            <if test="sid!=null">`sid`= #{sid},</if>
+            <if test="userId!=null">`user_id`= #{userId},</if>
+
+        </trim>
+        WHERE sid=#{sid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseReviewUser" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_review_user
+        <where>
+            <if test="ruId != null">AND ru_id = #{ruId}</if>
+            <if test="sid != null">AND sid = #{sid}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseReviewUser">
+        DELETE from sse_review_user
+        <where>
+            <if test="ruId != null">AND ru_id = #{ruId}</if>
+            <if test="sid != null">AND sid = #{sid}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+

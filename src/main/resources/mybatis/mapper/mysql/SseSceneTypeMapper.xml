@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SseSceneTypeDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SseSceneType">
+        <result column="st_id" property="stId"/>
+        <result column="p_id" property="pId"/>
+        <result column="st_name" property="stName"/>
+        <result column="st_name_english" property="stNameEnglish"/>
+        <result column="st_type" property="stType"/>
+        <result column="orders" property="orders"/>
+        <result column="opt_time" property="optTime"/>
+        <result column="opt_person" property="optPerson"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `st_id`,
+		`p_id`,
+		`st_name`,
+		`st_name_english`,
+		`st_type`,
+		`orders`,
+		`opt_time`,
+		`opt_person`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO sse_scene_type (
+		`st_id`,
+		`p_id`,
+		`st_name`,
+		`st_name_english`,
+		`st_type`,
+		`orders`,
+		`opt_time`,
+		`opt_person`
+
+	) VALUES ( 
+		#{stId},
+		#{pId},
+		#{stName},
+		#{stNameEnglish},
+		#{stType},
+		#{orders},
+		#{optTime},
+		#{optPerson}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO sse_scene_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stId!=null">`st_id`,</if>
+            <if test="pId!=null">`p_id`,</if>
+            <if test="stName!=null">`st_name`,</if>
+            <if test="stNameEnglish!=null">`st_name_english`,</if>
+            <if test="stType!=null">`st_type`,</if>
+            <if test="orders!=null">`orders`,</if>
+            <if test="optTime!=null">`opt_time`,</if>
+            <if test="optPerson!=null">`opt_person`,</if>
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stId!=null">#{stId},</if>
+            <if test="pId!=null">#{pId},</if>
+            <if test="stName!=null">#{stName},</if>
+            <if test="stNameEnglish!=null">#{stNameEnglish},</if>
+            <if test="stType!=null">#{stType},</if>
+            <if test="orders!=null">#{orders},</if>
+            <if test="optTime!=null">#{optTime},</if>
+            <if test="optPerson!=null">#{optPerson},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE sse_scene_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="stId!=null">`st_id`= #{stId},</if>
+            <if test="pId!=null">`p_id`= #{pId},</if>
+            <if test="stName!=null">`st_name`= #{stName},</if>
+            <if test="stNameEnglish!=null">`st_name_english`= #{stNameEnglish},</if>
+            <if test="stType!=null">`st_type`= #{stType},</if>
+            <if test="orders!=null">`orders`= #{orders},</if>
+            <if test="optTime!=null">`opt_time`= #{optTime},</if>
+            <if test="optPerson!=null">`opt_person`= #{optPerson},</if>
+
+        </trim>
+        WHERE st_id=#{stId}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.SseSceneType" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_type
+        <where>
+            <if test="stId != null">AND st_id = #{stId}</if>
+            <if test="pId != null">AND p_id = #{pId}</if>
+            <if test="stName != null">AND st_name = #{stName}</if>
+            <if test="stNameEnglish != null">AND st_name_english = #{stNameEnglish}</if>
+            <if test="stType != null">AND st_type = #{stType}</if>
+            <if test="orders != null">AND orders = #{orders}</if>
+            <if test="optTime != null">AND opt_time = #{optTime}</if>
+            <if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </select>
+    <select id="selectByid" parameterType="java.lang.String" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_type
+        WHERE st_id = #{stId}
+        order by orders asc
+    </select>
+
+    <select id="findListBySid" parameterType="java.lang.String" resultMap="AllColumnMap">
+        SELECT st.*
+        FROM sse_scene_type st,sse_scene_scenetype sst
+        where st.st_id = sst.st_id
+        and sst.sid = #{sid}
+    </select>
+
+    <select id="selectOneObj" parameterType="com.site.mountain.entity.SseSceneType" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_type
+        <where>
+            <if test="stId != null and stId != ''">AND st_id = #{stId}</if>
+            <if test="pId != null and pId != ''">AND p_id = #{pId}</if>
+            <if test="stType != null and stType != ''">AND st_type = #{stType}</if>
+        </where>
+        order by orders asc
+    </select>
+    <select id="selectByPid" parameterType="com.site.mountain.entity.SseSceneType" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from sse_scene_type
+        <where>
+            <if test="stId != null and stId != ''">AND st_id = #{stId}</if>
+            <if test="pId != null and pId != ''">AND p_id = #{pId}</if>
+            <if test="stType != null and stType != ''">AND st_type = #{stType}</if>
+        </where>
+        order by orders asc
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.SseSceneType">
+        DELETE from sse_scene_type
+        <where>
+            <if test="stId != null">AND st_id = #{stId}</if>
+            <if test="pId != null">AND p_id = #{pId}</if>
+            <if test="stName != null">AND st_name = #{stName}</if>
+            <if test="stNameEnglish != null">AND st_name_english = #{stNameEnglish}</if>
+            <if test="stType != null">AND st_type = #{stType}</if>
+            <if test="orders != null">AND orders = #{orders}</if>
+            <if test="optTime != null">AND opt_time = #{optTime}</if>
+            <if test="optPerson != null">AND opt_person = #{optPerson}</if>
+
+        </where>
+    </delete>
+
+
+</mapper>
+
