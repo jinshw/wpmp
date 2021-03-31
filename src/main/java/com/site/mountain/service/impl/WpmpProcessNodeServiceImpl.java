@@ -42,7 +42,7 @@ public class WpmpProcessNodeServiceImpl implements WpmpProcessNodeService {
     @Override
     public List<WpmpProcessNode> findCurrentNodeList(WpmpProcessNode pojo) {
         //查询当前项目的最大节点数
-        int maxStep = wpmpProcessNodeDao.selectMaxStep();
+        int maxStep = wpmpProcessNodeDao.selectMaxStep(pojo);
         pojo.setStepActive(maxStep);
         List<WpmpProcessNode> list = wpmpProcessNodeDao.findList(pojo);
         return list;

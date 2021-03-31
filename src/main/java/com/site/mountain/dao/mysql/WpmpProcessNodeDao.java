@@ -18,6 +18,6 @@ public interface WpmpProcessNodeDao {
 
     int updateOne(WpmpProcessNode pojo);
 
-    int selectMaxStep();
+    int selectMaxStep(WpmpProcessNode pojo);
 
 }

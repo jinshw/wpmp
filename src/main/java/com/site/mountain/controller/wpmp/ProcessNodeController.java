@@ -2,6 +2,7 @@ package com.site.mountain.controller.wpmp;
 
 import com.alibaba.fastjson.JSONObject;
 import com.site.mountain.constant.ConstantProperties;
+import com.site.mountain.controller.sys.SysFilesController;
 import com.site.mountain.entity.*;
 import com.site.mountain.service.SysFilesService;
 import com.site.mountain.service.WpmpNodeFilesService;
@@ -9,6 +10,8 @@ import com.site.mountain.service.WpmpProcessNodeService;
 import com.site.mountain.utils.UUIDUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +31,8 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "processnode")
-public class ProcessNode {
-
+public class ProcessNodeController {
+    private final static Logger logger = LoggerFactory.getLogger(ProcessNodeController.class);
     @Autowired
     WpmpProcessNodeService wpmpProcessNodeService;
     @Autowired
@@ -44,16 +46,22 @@ public class ProcessNode {
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-    public List<WpmpProcessNode> getList(@RequestBody WpmpProcessNode wpmpProcessNode) {
+    public Map<String, Object> getList(@RequestBody WpmpProcessNode wpmpProcessNode) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code", 20000);
         List<WpmpProcessNode> list = wpmpProcessNodeService.findList(wpmpProcessNode);
-        return list;
+        map.put("currentNode", list.get(0));
+        return map;
     }
 
     @RequestMapping(value = "currentlist", method = RequestMethod.POST)
     @ResponseBody
-    public List<WpmpProcessNode> getCurrentList(@RequestBody WpmpProcessNode wpmpProcessNode) {
+    public Map<String, Object> getCurrentList(@RequestBody WpmpProcessNode wpmpProcessNode) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code", 20000);
         List<WpmpProcessNode> list = wpmpProcessNodeService.findCurrentNodeList(wpmpProcessNode);
-        return list;
+        map.put("currentNode", list.get(0));
+        return map;
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -154,6 +162,63 @@ public class ProcessNode {
         sysFiles.setSuffixName(suffix);
         sysFiles.setSize(size);
         return sysFiles;
+    }
+
+    @RequestMapping(value = "fileDownLoad", method = RequestMethod.POST)
+    public void fileDownLoad(@RequestBody SysFiles sysFiles, HttpServletRequest request, HttpServletResponse response) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 20000);
+        String fileName = sysFiles.getFname();
+        String filePath = sysFiles.getPath();
+        String path = constantProperties.getFileUploadPath() + filePath;
+        File file = new File(path);
+
+        FileInputStream fileInputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        OutputStream outputStream = null;
+
+        response.setHeader("content-type", "application/octet-stream");
+        response.setContentType("application/octet-stream;charset=utf-8");
+        try {
+            if (!file.exists()) {
+                logger.info("文件不存在");
+                jsonObject.put("code", 20000);
+                jsonObject.put("status", 500);
+                jsonObject.put("data", "");
+                jsonObject.put("msg", "文件不存在");
+                response.setContentType("text/html;charset=utf-8");
+                response.getWriter().print(jsonObject.toJSONString());
+            }
+            response.addHeader("Content-Disposition", "attachment;fileName=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+
+            byte[] buffer = new byte[1024];
+            fileInputStream = new FileInputStream(file);
+            bufferedInputStream = new BufferedInputStream(fileInputStream);
+            outputStream = response.getOutputStream();
+            int i = bufferedInputStream.read(buffer);
+            while (i != -1) {
+                outputStream.write(buffer, 0, i);
+                i = bufferedInputStream.read(buffer);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (bufferedInputStream != null) {
+                    bufferedInputStream.close();
+                }
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

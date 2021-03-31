@@ -70,15 +70,14 @@
     <update id="updateOne">
         UPDATE wpmp_startend
         <trim prefix="set" suffixOverrides=",">
-            <if test="seId!=null">`se_id`= #{seId},</if> 
-			<if test="userId!=null">`user_id`= #{userId},</if> 
+			<if test="userId!=null">`user_id`= #{userId},</if>
 			<if test="bussnessname!=null">`bussnessname`= #{bussnessname},</if> 
 			<if test="pname!=null">`pname`= #{pname},</if> 
 			<if test="type!=null">`type`= #{type},</if> 
 			<if test="createTime!=null">`create_time`= #{createTime},</if> 
 
         </trim>
-        WHERE sid=#{sid}
+        WHERE se_id=#{seId}
     </update>
 
     <select id="findList" parameterType="com.site.mountain.entity.WpmpStartend" resultMap="AllColumnMap">
@@ -86,12 +85,12 @@
         <include refid="all_column"/>
         from wpmp_startend
         <where>
-            <if test="seId != null">AND se_id = #{seId}</if>
-			<if test="userId != null">AND user_id = #{userId}</if>
-			<if test="bussnessname != null">AND bussnessname = #{bussnessname}</if>
-			<if test="pname != null">AND pname = #{pname}</if>
-			<if test="type != null">AND type = #{type}</if>
-			<if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="seId != null and seId != ''">AND se_id = #{seId}</if>
+			<if test="userId != null and userId != ''">AND user_id = #{userId}</if>
+			<if test="bussnessname != null and  bussnessname != ''">AND bussnessname = #{bussnessname}</if>
+			<if test="pname != null and pname != ''">AND pname = #{pname}</if>
+			<if test="type != null and type != ''">AND type = #{type}</if>
+			<if test="createTime != null and createTime != ''">AND create_time = #{createTime}</if>
 
         </where>
     </select>

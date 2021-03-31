@@ -80,11 +80,11 @@
         <include refid="all_column"/>
         from wpmp_process_node
         <where>
-            <if test="pnId != null">AND pn_id = #{pnId}</if>
-			<if test="seId != null">AND se_id = #{seId}</if>
-			<if test="userId != null">AND user_id = #{userId}</if>
-			<if test="stepActive != null">AND step_active = #{stepActive}</if>
-			<if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="pnId != null and pnId != ''">AND pn_id = #{pnId}</if>
+			<if test="seId != null and seId != ''">AND se_id = #{seId}</if>
+			<if test="userId != null and userId !='' ">AND user_id = #{userId}</if>
+			<if test="stepActive != null and stepActive != ''">AND step_active = #{stepActive}</if>
+			<if test="createTime != null and createTime !=''">AND create_time = #{createTime}</if>
 
         </where>
     </select>
@@ -101,8 +101,9 @@
         </where>
     </delete>
 
-    <select id="selectMaxStep" resultType="java.lang.Integer">
+    <select id="selectMaxStep" parameterType="com.site.mountain.entity.WpmpProcessNode" resultType="java.lang.Integer">
         SELECT ifnull(max(step_active),1 ) from wpmp_process_node
+        where se_id = #{seId}
     </select>
 
 
