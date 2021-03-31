@@ -9,6 +9,7 @@
 		<result column="pname" property="pname"/>
 		<result column="type" property="type"/>
 		<result column="create_time" property="createTime"/>
+		<collection property="sysUser" column="user_id" select="com.site.mountain.dao.mysql.SysUserDao.findUser"/>
 
     </resultMap>
 

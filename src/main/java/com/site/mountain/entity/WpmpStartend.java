@@ -13,6 +13,16 @@ public class WpmpStartend {
     private Integer type;
     private Timestamp createTime;
 
+    private SysUser sysUser;
+
+    public SysUser getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(SysUser sysUser) {
+        this.sysUser = sysUser;
+    }
+
     public String getSeId() {
         return seId;
     }

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,31 @@ public class ProcessNode {
         List<WpmpProcessNode> list = wpmpProcessNodeService.findCurrentNodeList(wpmpProcessNode);
         return list;
     }
+
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> add(@RequestBody WpmpProcessNode wpmpProcessNode) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code", 20000);
+        wpmpProcessNode.setPnId(UUIDUtil.create32UUID());
+        Timestamp createtime = new Timestamp(System.currentTimeMillis());
+        wpmpProcessNode.setCreateTime(createtime);
+        Subject currentUser = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) currentUser.getPrincipal();
+        if (sysUser != null) {
+            wpmpProcessNode.setUserId(sysUser.getUserId());
+        }
+        int result = wpmpProcessNodeService.insert(wpmpProcessNode);
+        if (result == 0) {
+            map.put("status", 50000);
+            map.put("message", "执行失败");
+        } else {
+            map.put("status", 20000);
+            map.put("message", "执行成功");
+        }
+        return map;
+    }
+
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
