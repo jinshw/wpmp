@@ -50,7 +50,11 @@ public class ProcessNodeController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("code", 20000);
         List<WpmpProcessNode> list = wpmpProcessNodeService.findList(wpmpProcessNode);
-        map.put("currentNode", list.get(0));
+        if(list.size() > 0){
+            map.put("currentNode", list.get(0));
+        }else {
+            map.put("currentNode", null);
+        }
         return map;
     }
 
@@ -60,7 +64,12 @@ public class ProcessNodeController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("code", 20000);
         List<WpmpProcessNode> list = wpmpProcessNodeService.findCurrentNodeList(wpmpProcessNode);
-        map.put("currentNode", list.get(0));
+        if(list.size() > 0){
+            map.put("currentNode", list.get(0));
+        }else {
+            map.put("currentNode", null);
+        }
+
         return map;
     }
 
